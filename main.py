@@ -2,23 +2,23 @@ import time
 
 
 class Node():
-    def __init__(self, coef, degree: int):  
+    def __init__(self, coef, power: int):  
         super().__init__()
         self.coef = coef
-        self.degree = degree
+        self.power = power
         
     def __repr__(self):
-        return "{a}x^{b}".format(a=self.coef, b=self.degree)
+        return "{a}x^{b}".format(a=self.coef, b=self.power)
 
     def __eq__(self, other):
-        return self.coef == other.coef and self.degree == other.degree 
+        return self.coef == other.coef and self.power == other.power 
     
         
 class Polynomial():
     def __init__(self, list_of_nodes: list):
         super().__init__()
-        raw_list_of_nodes = self._sort_by_addition_of_nodes_with_same_degree(list_of_nodes)
-        self.list_of_nodes = self._sort_by_degree(raw_list_of_nodes)
+        raw_list_of_nodes = self._sort_by_addition_of_nodes_with_same_power(list_of_nodes)
+        self.list_of_nodes = self._sort_by_power(raw_list_of_nodes)
         
     def print_sorted_polynomial(self):
         _str = ''
@@ -29,12 +29,12 @@ class Polynomial():
                 _str += ' + ' + str(v)
         print(_str)
         
-    def _sort_by_addition_of_nodes_with_same_degree(self, list_of_nodes: list):
+    def _sort_by_addition_of_nodes_with_same_power(self, list_of_nodes: list):
         list_to_return = []
         for i, v in enumerate(list_of_nodes):
             node_has_been_added = False
             for _, node in enumerate(list_to_return):
-                if v.degree == node.degree:
+                if v.power == node.power:
                     node.coef += v.coef
                     node_has_been_added = True
             if not node_has_been_added:
@@ -50,22 +50,22 @@ class Polynomial():
                 [list_to_sort[0]] + \
                 self._sort([x for x in list_to_sort[1:] if x >= list_to_sort[0]])
     
-    def _sort_by_degree(self, list_of_nodes: list):
-        list_of_degrees = []
+    def _sort_by_power(self, list_of_nodes: list):
+        list_of_powers = []
         for i, v in enumerate(list_of_nodes):
-            list_of_degrees.append(v.degree)
+            list_of_powers.append(v.power)
         
-        new_order_of_degrees = self._sort(list_of_degrees)
-        new_reversed_order_of_degrees = list(reversed(new_order_of_degrees))
+        new_order_of_powers = self._sort(list_of_powers)
+        new_reversed_order_of_powers = list(reversed(new_order_of_powers))
         
         new_order_of_nodes = []
-        for _, v in enumerate(new_reversed_order_of_degrees):
+        for _, v in enumerate(new_reversed_order_of_powers):
             for i, node in enumerate(list_of_nodes):
-                if v == node.degree:
+                if v == node.power:
                     new_order_of_nodes.append(node)
                     list_of_nodes.remove(node)
                     
-        return new_order_of_nodes  # list of nodes, descending degrees order
+        return new_order_of_nodes  # list of nodes, descending powers order
                                 
 
 if __name__ == "__main__":
